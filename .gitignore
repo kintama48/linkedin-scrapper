@@ -1,1 +1,4 @@
 venv/
+.env
+*.xlsx
+search_scrapper/*.xlsx
