@@ -9,7 +9,7 @@ import xlsxwriter
 
 
 class Linkedin():
-    def __init__(self, search_key="data_analyst", email="abdullah.baig416@gmail.com", password="Abdullaharfa48",
+    def __init__(self, email, password, search_key="data_analyst",
                  pages=2):
         self.search_key = search_key  # Enter your Search key here to find people
         self.email = email
@@ -113,16 +113,3 @@ class Linkedin():
     def start(self):
         self.get_data()
         self.write_data()
-
-
-if __name__ == "__main__":
-    """
-        PROVIDE YOUR SEARCH KEY
-    """
-
-    SEARCH_KEY = "Backend developer"
-    PAGES_TO_SCRAPE = 2
-
-    obJH = Linkedin(search_key=SEARCH_KEY, email="abdullah.baig416@gmail.com", password="Abdullaharfa48",
-                    pages=PAGES_TO_SCRAPE)
-    obJH.start()
