@@ -1,7 +1,17 @@
 from email_scrapper.linkedin import LinkedIn as EmailLinkedIn
 from search_scrapper.linkedin_scrapper import Linkedin as SearchLinkedIn
 import xlsxwriter
+from dotenv import load_dotenv
+import os
 
+# Load environment variables from .env file
+load_dotenv()
+
+# Get environment variables
+email = os.getenv('EMAIL')
+password = os.getenv('PASSWORD')
+search_query = os.getenv('SEARCH_QUERY')
+pages = int(os.getenv('PAGES'))
 
 def compile_data(search_data, email_data):
     for profile in search_data:
@@ -29,14 +39,11 @@ def compile_data(search_data, email_data):
 
     workbook.close()
 
-
 # Example usage:
 if __name__ == "__main__":
-    email = "abdullah.baig416@gmail.com"
-    password = "Abdullaharfa48"
 
     # Step 1: Run the search scraper
-    search_linkedin = SearchLinkedIn(search_key="Backend developer", email=email, password=password, pages=2)
+    search_linkedin = SearchLinkedIn(search_key=search_query, email=email, password=password, pages=pages)
     search_linkedin.get_data()
     search_data = search_linkedin.data  # Collect the search data
 

@@ -5,6 +5,7 @@ beautifulsoup4==4.10.0
 blinker==1.4
 Brlapi==0.8.3
 certifi==2024.6.2
+cffi==1.16.0
 chardet==4.0.0
 click==8.0.3
 colorama==0.4.4
@@ -50,6 +51,7 @@ Pillow==9.0.1
 protobuf==3.12.4
 ptyprocess==0.7.0
 pycairo==1.20.1
+pycparser==2.22
 pycups==2.0.1
 PyGObject==3.42.1
 PyJWT==2.3.0
@@ -61,6 +63,7 @@ PySocks==1.7.1
 python-apt==2.4.0+ubuntu3
 python-dateutil==2.8.1
 python-debian==0.1.43+ubuntu1.1
+python-dotenv==1.0.1
 pytz==2022.1
 pyxdg==0.27
 PyYAML==5.4.1
