@@ -1,5 +1,4 @@
-from email_scrapper.linkedin import LinkedIn as EmailLinkedIn
-from search_scrapper.linkedin_scrapper import Linkedin as SearchLinkedIn
+from scrapper.linkedin import LinkedInScraper
 import xlsxwriter
 from dotenv import load_dotenv
 import os
@@ -12,6 +11,7 @@ email = os.getenv('EMAIL')
 password = os.getenv('PASSWORD')
 search_query = os.getenv('SEARCH_QUERY')
 pages = int(os.getenv('PAGES'))
+
 
 def compile_data(search_data, email_data):
     for profile in search_data:
@@ -39,34 +39,10 @@ def compile_data(search_data, email_data):
 
     workbook.close()
 
+
 # Example usage:
 if __name__ == "__main__":
-
-    # Step 1: Run the search scraper
-    search_linkedin = SearchLinkedIn(search_key=search_query, email=email, password=password, pages=pages)
-    search_linkedin.get_data()
-    search_data = search_linkedin.data  # Collect the search data
-
-    # Step 2: Extract profile URLs
-    profile_urls = [profile['profile_url'] for profile in search_data if profile['profile_url']]
-
-    # Step 3: Run the email scraper on the collected profile URLs
-    email_linkedin = EmailLinkedIn(email, password)
-    email_linkedin.setup_driver()
-
-    if email_linkedin.login():
-        print("Login successful")
-
-        # Collect emails for all profiles
-        email_data = {}
-        for profile_url in profile_urls:
-            emails = email_linkedin.single_scan(profile_url)
-            email_data[profile_url] = emails[0] if emails else 'Not Available'
-
-        email_linkedin.quit_driver()
-
-        # Step 4: Compile the data
-        compile_data(search_data, email_data)
-        print("Data compiled successfully")
-    else:
-        print("Login failed")
+    scraper = LinkedInScraper(email, password, search_query, pages)
+    search_data, email_data = scraper.run()
+    compile_data(search_data, email_data)
+    print("Data compiled successfully")

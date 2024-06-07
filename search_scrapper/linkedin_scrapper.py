@@ -20,7 +20,7 @@ class Linkedin():
     def get_data(self):
         # Set up Chrome options
         options = webdriver.ChromeOptions()
-        chromedriver_path = os.path.abspath(os.path.join(os.path.dirname(__file__), 'chromedriver'))
+        chromedriver_path = os.path.abspath(os.path.join(os.path.dirname(__file__), '..', 'chromedriver'))
         service = Service(chromedriver_path)
         driver = webdriver.Chrome(options=options, service=service)
 
@@ -54,7 +54,7 @@ class Linkedin():
                 self.search_key, start)
             driver.get(search_url)
             driver.maximize_window()
-            time.sleep(5)  # Ensure the page loads completely
+            time.sleep(3)  # Ensure the page loads completely
 
             for scroll in range(2):
                 driver.execute_script("window.scrollTo(0, document.body.scrollHeight);")

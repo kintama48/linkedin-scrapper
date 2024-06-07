@@ -17,7 +17,7 @@ class LinkedIn:
 
     def setup_driver(self):
         # Get the absolute path of chromedriver
-        chromedriver_path = os.path.abspath(os.path.join(os.path.dirname(__file__), 'chromedriver'))
+        chromedriver_path = os.path.abspath(os.path.join(os.path.dirname(__file__), '..', 'chromedriver'))
         options = webdriver.ChromeOptions()
         # options.add_argument("--headless")  # Uncomment to run in headless mode
         service = Service(chromedriver_path)
@@ -28,7 +28,7 @@ class LinkedIn:
         self.driver.find_element(By.ID, "username").send_keys(self.email)
         self.driver.find_element(By.ID, "password").send_keys(self.password)
         self.driver.find_element(By.XPATH, "//*[@type='submit']").click()
-        time.sleep(3)  # Wait for the login process to complete
+        time.sleep(1)  # Wait for the login process to complete
 
         # Check if login was successful
         if "feed" in self.driver.current_url:
@@ -40,7 +40,7 @@ class LinkedIn:
         for profile in profiles:
             profile = profile + "/overlay/contact-info/"
             self.driver.get(profile)
-            time.sleep(3)  # Allow time for the page to load
+            time.sleep(2)  # Allow time for the page to load
 
             sc = BeautifulSoup(self.driver.page_source, 'lxml')
             emails_found = self.extract_emails(sc)
@@ -50,7 +50,7 @@ class LinkedIn:
     def single_scan(self, profile):
         profile = profile + "/overlay/contact-info/"
         self.driver.get(profile)
-        time.sleep(3)  # Allow time for the page to load
+        time.sleep(2)  # Allow time for the page to load
 
         sc = BeautifulSoup(self.driver.page_source, 'lxml')
         emails_found = self.extract_emails(sc)

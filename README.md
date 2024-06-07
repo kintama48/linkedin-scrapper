@@ -26,7 +26,7 @@ This script is repurposed from the following repositories:
    - Download from [here](https://chromedriver.chromium.org/downloads)
    - Place it in the root directory of the project.
 
-5. **Create a `.env` file in the root directory and add the following variables:**
+4. **Create a `.env` file in the root directory and add the following variables:**
    ```bash
    EMAIL=<YOUR_EMAIL>
    PASSWORD=<YOUR_PASSWORD>
@@ -58,3 +58,16 @@ This script is repurposed from the following repositories:
 - Make sure you have the latest version of Chrome installed.
 - The script navigates LinkedIn pages and might be subject to LinkedIn's rate limiting or CAPTCHA mechanisms.
 - Use this script responsibly and ensure compliance with LinkedIn's terms of service.
+
+## Troubleshooting
+
+If you encounter the following error:
+
+```plaintext
+selenium.common.exceptions.SessionNotCreatedException: Message: session not created: This version of ChromeDriver only supports Chrome version 125
+Current browser version is 124.0.6367.91 with binary path /opt/google/chrome/chrome
+```
+
+This script supports Chrome versions 125. You can download the appropriate ChromeDriver from [here](https://developer.chrome.com/docs/chromedriver/downloads).
+
+Ensure you have the correct version of Chrome and ChromeDriver installed.
