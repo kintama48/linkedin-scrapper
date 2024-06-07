@@ -1,17 +1,17 @@
 import os
-
 from selenium import webdriver
 from selenium.webdriver.chrome.service import Service
 from selenium.webdriver.common.by import By
+from selenium.webdriver.support.ui import WebDriverWait
+from selenium.webdriver.support import expected_conditions as EC
 import time
 from bs4 import BeautifulSoup
 import xlsxwriter
 
 
 class Linkedin():
-    def __init__(self, email, password, search_key="data_analyst",
-                 pages=2):
-        self.search_key = search_key  # Enter your Search key here to find people
+    def __init__(self, email, password, search_key="data_analyst", pages=2):
+        self.search_key = search_key
         self.email = email
         self.password = password
         self.pages = pages
@@ -25,10 +25,28 @@ class Linkedin():
         driver = webdriver.Chrome(options=options, service=service)
 
         driver.get('https://www.linkedin.com/login')
-        driver.find_element(By.ID, 'username').send_keys(self.email)  # Enter username of LinkedIn account here
-        driver.find_element(By.ID, 'password').send_keys(self.password)  # Enter Password of LinkedIn account here
+        driver.find_element(By.ID, 'username').send_keys(self.email)
+        driver.find_element(By.ID, 'password').send_keys(self.password)
         driver.find_element(By.XPATH, "//*[@type='submit']").click()
 
+        try:
+            # Wait for the 2FA page to load
+            two_fa_form = WebDriverWait(driver, 10).until(
+                EC.presence_of_element_located((By.ID, "two-step-challenge"))
+            )
+            if two_fa_form:
+                print("2FA page loaded. Please enter the 2FA code on the LinkedIn page.")
+                while True:
+                    input("Press Enter after you have entered the 2FA code and clicked Submit on the LinkedIn page...")
+                    if ("challenge" not in driver.current_url or
+                            "feed" in driver.current_url or "search/results" in driver.current_url):
+                        print("2FA verification successful.")
+                        break
+                    else:
+                        print(
+                            "2FA verification not completed yet. Please complete the 2FA verification on the LinkedIn page.")
+        except:
+            print("No 2FA page detected, proceeding with login.")
 
         for no in range(1, self.pages + 1):
             start = "&page={}".format(no)
