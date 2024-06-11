@@ -7,47 +7,7 @@ from selenium.webdriver.support.ui import WebDriverWait
 from selenium.webdriver.support import expected_conditions as EC
 import time
 import pandas as pd
-
-
-class Event:
-    def __init__(self, name):
-        self.name = name
-
-    @staticmethod
-    def from_webpage(driver):
-        try:
-            event_name = driver.find_element(By.XPATH, "//h1").text
-            return Event(event_name)
-        except Exception as e:
-            print(f"Error extracting event details: {e}")
-            return None
-
-    def register_or_attend(self, driver):
-        try:
-            register_button = driver.find_element(By.XPATH, "//button/span[text()='Register']/..")
-            register_button.click()
-            print(f"Clicked 'Register' button for event: {self.name}")
-            self.complete_registration(driver)
-        except:
-            try:
-                attend_button = driver.find_element(By.XPATH, "//button/span[text()='Attend']/..")
-                attend_button.click()
-                print(f"Clicked 'Attend' button for event: {self.name}")
-                time.sleep(3)  # Wait to see the feedback
-            except Exception as e:
-                print(f"No 'Register' or 'Attend' button found for event: {self.name}, error: {e}")
-
-    def complete_registration(self, driver):
-        try:
-            submit_button = driver.find_element(By.XPATH, "//button[contains(text(), 'Submit')]")
-            submit_button.click()
-            time.sleep(3)  # Wait to see the feedback
-            print(f"Clicked 'Submit' button to complete registration for event: {self.name}")
-        except:
-            print(f"No 'Submit' button found to complete registration for event: {self.name}")
-
-    def get_event_details(self):
-        return {'Event Name': self.name}
+from .event import Event
 
 
 class LinkedInScraper:
@@ -83,20 +43,16 @@ class LinkedInScraper:
 
     def handle_2fa(self):
         try:
-            two_fa_form = WebDriverWait(self.driver, 10).until(
-                EC.presence_of_element_located((By.ID, "two-step-challenge"))
-            )
-            if two_fa_form:
-                print("2FA page loaded. Please enter the 2FA code on the LinkedIn page.")
-                while True:
-                    input("Press Enter after you have entered the 2FA code and clicked Submit on the LinkedIn page...")
-                    if ("challenge" not in self.driver.current_url or
-                            "feed" in self.driver.current_url or "search/results" in self.driver.current_url):
-                        print("2FA verification successful.")
-                        break
-                    else:
-                        print(
-                            "2FA verification not completed yet. Please complete the 2FA verification on the LinkedIn page.")
+            print("2FA page loaded. Please perform 2FA.")
+            while True:
+                input("Press Enter after you have entered peformed 2FA...")
+                if ("challenge" not in self.driver.current_url or
+                        "feed" in self.driver.current_url or "search/results" in self.driver.current_url):
+                    print("2FA verification successful.")
+                    break
+                else:
+                    print(
+                        "2FA verification not completed yet. Please complete the 2FA verification on the LinkedIn page.")
         except:
             print("No 2FA page detected, proceeding with login.")
 
