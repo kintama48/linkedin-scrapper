@@ -47,7 +47,7 @@ class Event:
             print(f"Clicked 'Register' button for event: {self.name}")
             self.complete_registration(driver)
         except Exception as e:
-            print(f"Register button not found for event: {self.name}. Trying 'Attend' button. Error: {e}")
+            print(f"Register button not found for event: {self.name}. Trying 'Attend' button.")
             try:
                 # If Register button is not found, try to click the Attend button
                 attend_button = WebDriverWait(driver, 2).until(
@@ -57,7 +57,7 @@ class Event:
                 print(f"Clicked 'Attend' button for event: {self.name}")
                 time.sleep(5)  # Wait to see the feedback
             except Exception as e:
-                print(f"No 'Register' or 'Attend' button found for event: {self.name}, error: {e}")
+                print(f"No 'Register' or 'Attend' button found for event: {self.name}")
 
     def complete_registration(self, driver):
         try:
@@ -70,7 +70,7 @@ class Event:
             time.sleep(5)  # Wait to see the feedback
             print(f"Clicked 'Submit' button to complete registration for event: {self.name}")
         except Exception as e:
-            print(f"No 'Submit' button found to complete registration for event: {self.name}. Error: {e}")
+            print(f"No 'Submit' button found to complete registration for event: {self.name}")
 
     def get_event_details(self):
         return {

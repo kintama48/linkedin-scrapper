@@ -45,7 +45,7 @@ class LinkedInScraper:
         try:
             print("2FA page loaded. Please perform 2FA.")
             while True:
-                input("Press Enter after you have entered peformed 2FA...")
+                input("Press Enter after you have performed 2FA...")
                 if ("challenge" not in self.driver.current_url or
                         "feed" in self.driver.current_url or "search/results" in self.driver.current_url):
                     print("2FA verification successful.")
@@ -64,7 +64,7 @@ class LinkedInScraper:
 
         for no in range(1, self.pages + 1):
             print(f"Going to scrape Page {no} data")
-            for scroll in range(2):
+            for scroll in range(3):  # Scroll more times to ensure full page load
                 self.driver.execute_script("window.scrollTo(0, document.body.scrollHeight);")
                 time.sleep(2)
 
@@ -86,25 +86,22 @@ class LinkedInScraper:
 
     def go_to_next_page(self, current_page):
         try:
-            next_button = WebDriverWait(self.driver, 4).until(
+            # Scroll to the bottom of the page to ensure the "Next" button is visible
+            self.driver.execute_script("window.scrollTo(0, document.body.scrollHeight);")
+            time.sleep(2)  # Wait for the scroll to complete and the elements to load
+
+            next_button = WebDriverWait(self.driver, 10).until(
                 EC.element_to_be_clickable((By.XPATH, '//button[contains(@aria-label, "Next")]'))
             )
-            if next_button:
-                print(f"Clicking next button for page {current_page + 1}")
-                try:
-                    next_button.click()
-                except:
-                    print(f"Error clicking next button: {e}")
-                    return False
+            print(f"Clicking next button for page {current_page + 1}")
+            next_button.click()
 
-                WebDriverWait(self.driver, 5).until(
-                    EC.presence_of_element_located((By.XPATH, f'//span[text()="{current_page + 1}"]'))
-                )
-                time.sleep(3)  # Ensure the page loads completely
-                return True
-            else:
-                print("No more pages to scrape.")
-                return False
+            # Wait for the next page to load by checking the presence of a specific element on the next page
+            WebDriverWait(self.driver, 10).until(
+                EC.presence_of_element_located((By.XPATH, f'//span[text()="{current_page + 1}"]'))
+            )
+            time.sleep(3)  # Ensure the page loads completely
+            return True
         except Exception as e:
             print(f"Error in WebDriverWait: {e}")
             return False
