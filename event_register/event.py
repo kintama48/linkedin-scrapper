@@ -16,21 +16,32 @@ class Event:
     def from_webpage(driver):
         try:
             event_name = WebDriverWait(driver, 3).until(EC.presence_of_element_located((By.XPATH, "//h1"))).text
-            event_datetime = driver.find_element(By.XPATH,
-                                                 '//*[@id="events-top-card"]/div[1]/div[2]/div/div[1]/div[1]/div[2]/div/span').text
-            event_organizer = driver.find_element(By.XPATH,
+            try:
+                event_datetime = driver.find_element(By.XPATH,
+                                                     '//*[@id="events-top-card"]/div[1]/div[2]/div/div[1]/div[1]/div[2]/div/span').text
+            except Exception as e:
+                event_datetime = None
+                print(e.__str__())
+
+            try:
+                event_organizer = driver.find_element(By.XPATH,
                                                   '//*[@id="events-top-card"]/div[1]/div[2]/div/div[1]/div[1]/div[1]/span/a').text
+            except Exception as e:
+                event_organizer = None
+                print(e.__str__())
             try:
                 meeting_url = driver.find_element(By.XPATH,
                                                   '//a[contains(@class, "events-live-top-card__external-url")]').get_attribute(
                     "href")
-            except:
+            except Exception as e:
                 meeting_url = None
+                print(e.__str__())
             try:
                 no_of_attendees = driver.find_element(By.XPATH,
                                                       '//*[@id="events-top-card"]/div[1]/div[2]/div/div[1]/div[1]/div[5]/div/div/div').text
-            except:
+            except Exception as e:
                 no_of_attendees = None
+                print(e.__str__())
             return Event(event_name, event_datetime, event_organizer, meeting_url, no_of_attendees)
         except Exception as e:
             print(f"Error extracting event details: {e}")
