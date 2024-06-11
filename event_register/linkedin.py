@@ -1,5 +1,4 @@
 import os
-
 from bs4 import BeautifulSoup
 from selenium import webdriver
 from selenium.webdriver.chrome.service import Service
@@ -7,8 +6,48 @@ from selenium.webdriver.common.by import By
 from selenium.webdriver.support.ui import WebDriverWait
 from selenium.webdriver.support import expected_conditions as EC
 import time
-from .event import Event
 import pandas as pd
+
+
+class Event:
+    def __init__(self, name):
+        self.name = name
+
+    @staticmethod
+    def from_webpage(driver):
+        try:
+            event_name = driver.find_element(By.XPATH, "//h1").text
+            return Event(event_name)
+        except Exception as e:
+            print(f"Error extracting event details: {e}")
+            return None
+
+    def register_or_attend(self, driver):
+        try:
+            register_button = driver.find_element(By.XPATH, "//button/span[text()='Register']/..")
+            register_button.click()
+            print(f"Clicked 'Register' button for event: {self.name}")
+            self.complete_registration(driver)
+        except:
+            try:
+                attend_button = driver.find_element(By.XPATH, "//button/span[text()='Attend']/..")
+                attend_button.click()
+                print(f"Clicked 'Attend' button for event: {self.name}")
+                time.sleep(3)  # Wait to see the feedback
+            except Exception as e:
+                print(f"No 'Register' or 'Attend' button found for event: {self.name}, error: {e}")
+
+    def complete_registration(self, driver):
+        try:
+            submit_button = driver.find_element(By.XPATH, "//button[contains(text(), 'Submit')]")
+            submit_button.click()
+            time.sleep(3)  # Wait to see the feedback
+            print(f"Clicked 'Submit' button to complete registration for event: {self.name}")
+        except:
+            print(f"No 'Submit' button found to complete registration for event: {self.name}")
+
+    def get_event_details(self):
+        return {'Event Name': self.name}
 
 
 class LinkedInScraper:
@@ -131,7 +170,7 @@ class LinkedInScraper:
             self.get_event_data()
             self.process_event_links()
             self.save_to_excel()
-            print("Registered events:", self.event_data)
+            print("Registered events:", [event.name for event in self.event_data])
         else:
             print("Login failed")
         self.driver.quit()
