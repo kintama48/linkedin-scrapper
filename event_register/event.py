@@ -3,6 +3,7 @@ from selenium.webdriver.common.by import By
 from selenium.webdriver.support import expected_conditions as EC
 from selenium.webdriver.support.ui import WebDriverWait
 
+
 class Event:
     def __init__(self, name, datetime=None, organizer=None, meeting_url=None, no_of_attendees=None):
         self.name = name
@@ -20,9 +21,9 @@ class Event:
             event_organizer = driver.find_element(By.XPATH,
                                                   '//*[@id="events-top-card"]/div[1]/div[2]/div/div[1]/div[1]/div[1]/span/a').text
             try:
-                meeting_url = (driver.find_element(By.XPATH,
-                                                   '//*[@id="events-top-card"]/div[1]/div[2]/div/div[1]/div[1]/div[4]')
-                               .get_attribute("href"))
+                meeting_url = driver.find_element(By.XPATH,
+                                                  '//a[contains(@class, "events-live-top-card__external-url")]').get_attribute(
+                    "href")
             except:
                 meeting_url = None
             try:
@@ -60,8 +61,10 @@ class Event:
 
     def complete_registration(self, driver):
         try:
-            submit_button = WebDriverWait(driver, 3).until(
-                EC.element_to_be_clickable((By.XPATH, "//div[@id='ember2220']//button[contains(text(), 'Submit')]"))
+            # Use a more precise and generalized XPath to locate the submit button
+            submit_button = WebDriverWait(driver, 4).until(
+                EC.element_to_be_clickable(
+                    (By.XPATH, "//button[@class='lead-gen-modal__submit-button artdeco-button artdeco-button--2']"))
             )
             submit_button.click()
             time.sleep(5)  # Wait to see the feedback

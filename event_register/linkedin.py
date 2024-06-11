@@ -86,13 +86,18 @@ class LinkedInScraper:
 
     def go_to_next_page(self, current_page):
         try:
-            next_button = WebDriverWait(self.driver, 10).until(
+            next_button = WebDriverWait(self.driver, 4).until(
                 EC.element_to_be_clickable((By.XPATH, '//button[contains(@aria-label, "Next")]'))
             )
             if next_button:
                 print(f"Clicking next button for page {current_page + 1}")
-                next_button.click()
-                WebDriverWait(self.driver, 10).until(
+                try:
+                    next_button.click()
+                except:
+                    print(f"Error clicking next button: {e}")
+                    return False
+
+                WebDriverWait(self.driver, 5).until(
                     EC.presence_of_element_located((By.XPATH, f'//span[text()="{current_page + 1}"]'))
                 )
                 time.sleep(3)  # Ensure the page loads completely
@@ -101,7 +106,7 @@ class LinkedInScraper:
                 print("No more pages to scrape.")
                 return False
         except Exception as e:
-            print(f"Error clicking next button: {e}")
+            print(f"Error in WebDriverWait: {e}")
             return False
 
     def process_event_links(self):
