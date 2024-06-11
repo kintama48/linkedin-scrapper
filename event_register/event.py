@@ -1,9 +1,7 @@
 import time
-
 from selenium.webdriver.common.by import By
 from selenium.webdriver.support import expected_conditions as EC
 from selenium.webdriver.support.ui import WebDriverWait
-
 
 class Event:
     def __init__(self, name, datetime=None, organizer=None, meeting_url=None, no_of_attendees=None):
@@ -16,7 +14,7 @@ class Event:
     @staticmethod
     def from_webpage(driver):
         try:
-            event_name = WebDriverWait(driver, 10).until(EC.presence_of_element_located((By.XPATH, "//h1"))).text
+            event_name = WebDriverWait(driver, 3).until(EC.presence_of_element_located((By.XPATH, "//h1"))).text
             event_datetime = driver.find_element(By.XPATH,
                                                  '//*[@id="events-top-card"]/div[1]/div[2]/div/div[1]/div[1]/div[2]/div/span').text
             event_organizer = driver.find_element(By.XPATH,
@@ -39,9 +37,10 @@ class Event:
 
     def register_or_attend(self, driver):
         try:
+            self.get_event_details()
             # Try to click the Register button if present
-            register_button = WebDriverWait(driver, 10).until(
-                EC.element_to_be_clickable((By.XPATH, '//*[@id="ember1768"]'))
+            register_button = WebDriverWait(driver, 2).until(
+                EC.element_to_be_clickable((By.XPATH, "//button//span[text()='Register']/.."))
             )
             register_button.click()
             print(f"Clicked 'Register' button for event: {self.name}")
@@ -50,8 +49,8 @@ class Event:
             print(f"Register button not found for event: {self.name}. Trying 'Attend' button. Error: {e}")
             try:
                 # If Register button is not found, try to click the Attend button
-                attend_button = WebDriverWait(driver, 10).until(
-                    EC.element_to_be_clickable((By.XPATH, '//*[@id="ember1607"]'))
+                attend_button = WebDriverWait(driver, 2).until(
+                    EC.element_to_be_clickable((By.XPATH, "//button//span[text()='Attend']/.."))
                 )
                 attend_button.click()
                 print(f"Clicked 'Attend' button for event: {self.name}")
@@ -61,8 +60,8 @@ class Event:
 
     def complete_registration(self, driver):
         try:
-            submit_button = WebDriverWait(driver, 10).until(
-                EC.element_to_be_clickable((By.XPATH, '//*[@id="ember1826"]/button'))
+            submit_button = WebDriverWait(driver, 3).until(
+                EC.element_to_be_clickable((By.XPATH, "//div[@id='ember2220']//button[contains(text(), 'Submit')]"))
             )
             submit_button.click()
             time.sleep(5)  # Wait to see the feedback
