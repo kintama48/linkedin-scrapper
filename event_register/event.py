@@ -16,10 +16,16 @@ class Event:
     def from_webpage(driver):
         try:
             event_name = WebDriverWait(driver, 3).until(EC.presence_of_element_located((By.XPATH, "//h1"))).text
-            event_datetime = driver.find_element(By.XPATH,
-                                                 '//*[@id="events-top-card"]/div[1]/div[2]/div/div[1]/div[1]/div[2]/div/span').text
-            event_organizer = driver.find_element(By.XPATH,
+            try:
+                event_datetime = driver.find_element(By.XPATH,
+                                                     '//*[@id="events-top-card"]/div[1]/div[2]/div/div[1]/div[1]/div[2]/div/span').text
+            except:
+                event_datetime = None
+            try:
+                event_organizer = driver.find_element(By.XPATH,
                                                   '//*[@id="events-top-card"]/div[1]/div[2]/div/div[1]/div[1]/div[1]/span/a').text
+            except:
+                event_organizer = None
             try:
                 meeting_url = driver.find_element(By.XPATH,
                                                   '//a[contains(@class, "events-live-top-card__external-url")]').get_attribute(
