@@ -1,6 +1,6 @@
-# LinkedIn Search/Email Scraper
+# LinkedIn Event Registration Automation
 
-This scraper uses Selenium and BeautifulSoup (BS4) to visit a LinkedIn search page and scrape the emails of the profiles that appear in the search results. It is capable of capturing the emails of the profiles displayed in the search results and compiling the user data, including emails, into a single file.
+This scraper uses Selenium and BeautifulSoup (BS4) to visit a LinkedIn search page, scrape event links, and data, and then visit those events to attend or register for them. It is capable of navigating through multiple pages of search results, capturing event links, and compiling the event data into an Excel file. Additionally, it supports Two-Factor Authentication (2FA).
 
 ## Disclaimer
 
@@ -32,8 +32,8 @@ This script is repurposed from the following repositories:
    PASSWORD=<YOUR_PASSWORD>
 
    # Change the following variables according to your requirements
-   SEARCH_QUERY="Backend Developer"
-   PAGES=2
+   SEARCH_QUERY="Devops"
+   PAGES=100
    ```
 
 5. **Run the script:**
@@ -49,9 +49,11 @@ This script is repurposed from the following repositories:
 
 3. **The script will:**
    - Log in to LinkedIn using the provided credentials.
+   - Support Two-Factor Authentication (2FA) if enabled.
    - Perform a search based on the `SEARCH_QUERY` parameter.
-   - Scrape profile information and emails from the search results pages.
-   - Compile the data into an Excel file named `linkedin-compiled-data.xlsx`.
+   - Scrape event links and data from the search results pages.
+   - Visit each event page to attend or register for the event.
+   - Compile the data into an Excel file named `linkedin_events.xlsx`.
 
 ## Notes
 
@@ -71,3 +73,15 @@ Current browser version is 124.0.6367.91 with binary path /opt/google/chrome/chr
 This script supports Chrome versions 125. You can download the appropriate ChromeDriver from [here](https://developer.chrome.com/docs/chromedriver/downloads).
 
 Ensure you have the correct version of Chrome and ChromeDriver installed.
+
+If the script fails to click the "Next" button while paginating through search results, ensure that:
+- The XPath used for the "Next" button is accurate.
+- There is enough wait time for the button to become clickable.
+- The page is fully loaded before attempting to click the button.
+
+If issues persist, review the log messages for more details about the error and check the HTML structure of the LinkedIn search results page to ensure the XPath expressions are correct.
+
+If the script encounters issues with attending or registering for events, ensure that:
+- The XPath used for the "Register" or "Attend" button is accurate.
+- There is enough wait time for the buttons to become clickable.
+- The page is fully loaded before attempting to interact with the buttons.
