@@ -152,9 +152,9 @@ class LinkedInScraper:
                 self.driver.execute_script("window.scrollTo(0, document.body.scrollHeight);")
                 event.follow_event_organizer(self.driver)
                 time.sleep(5)
-                self.driver.execute_script("window.scrollTo(0, document.body.scrollHeight/2);")
-                event.share_event(self.driver)
-                time.sleep(5)
+                # self.driver.execute_script("window.scrollTo(0, document.body.scrollHeight/2);")
+                # event.share_event(self.driver)
+                # time.sleep(5)
                 # event.invite_users(self.driver, self.invited_users)
                 # event.scrape_attendees(self.driver)
                 self.event_data.append(event)
@@ -169,7 +169,7 @@ class LinkedInScraper:
         print("Event data saved to 'linkedin_events.xlsx'")
 
     def random_pause(self):
-        delay = random.randint(300, 600)  # Random delay between 5 to 10 minutes
+        delay = random.randint(40, 100)  # Random delay between 5 to 10 minutes
         print(f"Pausing for {delay // 60} minutes")
         time.sleep(delay)
 
