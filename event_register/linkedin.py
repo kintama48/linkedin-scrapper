@@ -33,7 +33,8 @@ class LinkedInScraper:
         self.invited_users = set()
 
     def setup_driver(self):
-        chromedriver_path = os.path.abspath(os.path.join(os.path.dirname(__file__), '..', 'chromedriver'))
+        chromedriver_path = os.path.abspath(os.path.join(os.path.dirname(__file__), '..', 'chromedriver' if os.getenv(
+            'PLATFORM') == 'linux' else 'chromedriver.exe'))
         options = webdriver.ChromeOptions()
         service = Service(chromedriver_path)
         self.driver = webdriver.Chrome(options=options, service=service)
