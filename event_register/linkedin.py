@@ -160,6 +160,7 @@ class LinkedInScraper:
                 self.event_data.append(event)
             if len(self.event_data) % 50 == 0:
                 self.random_pause()
+            time.sleep(10)
 
     def save_to_excel(self):
         event_details_list = [event.get_event_details() for event in self.event_data]
