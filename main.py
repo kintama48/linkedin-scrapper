@@ -9,11 +9,11 @@ load_dotenv()
 # Get environment variables
 email = os.getenv('EMAIL')
 password = os.getenv('PASSWORD')
-search_query = os.getenv('SEARCH_QUERY')
 pages = int(os.getenv('PAGES'))
+auto_restart_time = os.getenv('AUTO_RESTART_TIME')
 
 # Example usage:
 if __name__ == "__main__":
-    scraper = LinkedInScraper(email, password, search_query, pages)
-    scraper.run()
+    scraper = LinkedInScraper(email, password, pages=pages, auto_restart_time=auto_restart_time)
+    scraper.autostart()
     print("Data compiled successfully")

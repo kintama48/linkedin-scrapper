@@ -24,3 +24,4 @@ tzdata==2024.1
 urllib3==2.2.1
 wsproto==1.2.0
 XlsxWriter==3.2.0
+schedule==1.2.2
