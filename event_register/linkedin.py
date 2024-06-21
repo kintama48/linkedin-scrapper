@@ -114,8 +114,7 @@ class LinkedInScraper:
             if not self.go_to_next_page(no):
                 break
 
-            if no % 50 == 0:
-                self.random_pause()
+            self.random_pause(10, 20)
 
     def collect_event_link(self, event):
         try:
@@ -168,8 +167,9 @@ class LinkedInScraper:
         df.to_excel('linkedin_events.xlsx', index=False)
         print("Event data saved to 'linkedin_events.xlsx'")
 
-    def random_pause(self):
-        delay = random.randint(40, 100)  # Random delay between 5 to 10 minutes
+    @staticmethod
+    def random_pause(min=40, max=100):
+        delay = random.randint(min, max)  # Random delay between 5 to 10 minutes
         print(f"Pausing for {delay // 60} minutes")
         time.sleep(delay)
 
