@@ -12,7 +12,6 @@ password = os.getenv('PASSWORD')
 pages = int(os.getenv('PAGES'))
 auto_restart_time = os.getenv('AUTO_RESTART_TIME')
 
-# Example usage:
 if __name__ == "__main__":
     scraper = LinkedInScraper(email, password, pages=pages, auto_restart_time=auto_restart_time)
     scraper.autostart()
