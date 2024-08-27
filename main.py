@@ -22,7 +22,7 @@ import matplotlib.pyplot as plt
 
 # Load data from the CSV file
 file_path = "results.csv"
-df = pd.read_csv(file_path)
+df = pd.read_csv(file_path, low_memory=False)
 
 # Convert the timestamp to datetime
 df['timeStamp'] = pd.to_datetime(df['timeStamp'], unit='ms')
@@ -37,8 +37,8 @@ df['order_status'] = df['responseCode'].apply(lambda x: 'Success' if x == 200 el
 df['time'] = df['timeStamp'].dt.strftime('%H:%M')  # Extracting only hours and minutes
 grouped = df.groupby(['time', 'order_status']).size().unstack(fill_value=0)
 
-# Plot all orders
-plt.figure(figsize=(12, 8))
+# Increase the figure width to accommodate more x-axis labels
+plt.figure(figsize=(24, 10))  # Increased width and height
 ax1 = plt.subplot(211)
 grouped.plot(kind='bar', stacked=True, ax=ax1, color={'Success': 'blue', 'Failure': 'red'})
 
@@ -48,6 +48,9 @@ plt.xlabel('Time (HH:MM)')
 plt.ylabel('Number of Orders')
 plt.legend(title='Order Status')
 plt.xticks(rotation=45)
+
+# Adjust the frequency of x-axis labels if needed
+ax1.set_xticks(ax1.get_xticks()[::10])  # Show every 10th tick
 
 # Plot failures only
 ax2 = plt.subplot(212)
@@ -59,6 +62,9 @@ plt.title('Number of Failures Over Time')
 plt.xlabel('Time (HH:MM)')
 plt.ylabel('Number of Failures')
 plt.xticks(rotation=45)
+
+# Adjust the frequency of x-axis labels if needed
+ax2.set_xticks(ax2.get_xticks()[::10])  # Show every 10th tick
 
 # Calculate totals
 total_orders = df.shape[0]
@@ -79,5 +85,6 @@ plt.table(cellText=table_data, colLabels=['Metric', 'Value'], cellLoc='center', 
 plt.tight_layout()
 
 # Save the plot to a file
-plt.savefig('orders_with_failures_spaced_table.png')
+plt.savefig('orders_with_failures_spaced_table_large.png')
+
 
